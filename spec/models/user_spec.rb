@@ -22,7 +22,6 @@ describe User do
   describe 'validation' do
 
     describe 'nickname属性' do
-
       describe '文字数制限の検証' do
         context 'nicknameが20文字以下の場合' do
           let(:nickname) { 'あいうえおかきくけこさしすせそたちつてと' } # 20文字
