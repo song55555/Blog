@@ -3,22 +3,29 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    @categories = Category.all
+    @tags = Tag.all
   end
 
   def create
     @post = Post.new(post_params)
-    @post.user_id = current_user.id 
+    @post.user = current_user
     if @post.save
       flash[:notice] = '投稿しました'
-      redirect_to root_path 
+      redirect_to root_path
     else
+      @categories = Category.all
       flash[:alert] = '投稿に失敗しました'
       render :new
     end
   end
 
-  def show 
+  def show
     @post = Post.find_by(id: params[:id])
+    if @post.nil?
+      flash[:alert] = "投稿が見つかりません"
+      redirect_to root_path
+    end
   end
 
   def index
@@ -30,12 +37,14 @@ class PostsController < ApplicationController
     if @post.nil?
       flash[:alert] = "投稿が見つかりません"
       redirect_to root_path
+    else
+      @categories = Category.all
+      @tags = Tag.all
     end
   end
 
   def update
     @post = Post.find_by(id: params[:id])
-
     if @post.nil?
       flash[:alert] = "投稿が見つかりません"
       redirect_to root_path and return
@@ -45,6 +54,7 @@ class PostsController < ApplicationController
       flash[:notice] = "投稿が更新されました"
       redirect_to @post
     else
+      @categories = Category.all
       flash[:alert] = "投稿の更新に失敗しました"
       render :edit
     end
@@ -52,7 +62,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find_by(id: params[:id])
-    if @post.user == current_user
+    if @post&.user == current_user
       @post.destroy
       flash[:notice] = '投稿が削除されました'
     end
@@ -62,6 +72,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, :category_id, :tag_names)
   end
 end

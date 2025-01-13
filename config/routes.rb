@@ -8,5 +8,6 @@ Rails.application.routes.draw do
 
   root to: "posts#index"
   resources :posts, only: [ :new, :create, :show, :destroy, :edit, :update]
+  resources :tags, only: [:show]
 
 end

@@ -10,16 +10,24 @@
           </div>
           <% if user_signed_in? %>
             <% if @post.user_id == current_user.id %>
-            <div class="inline-flex space-x-2">
+              <div class="inline-flex space-x-2">
                 <%= link_to "編集", edit_post_path(@post), class: "text-sm bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white py-1 px-3 border border-blue-500 hover:border-transparent rounded" %>
                 <%= button_to "削除", post_path(@post), method: :delete, class: "text-sm bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white py-1 px-3 border border-blue-500 hover:border-transparent rounded" %>
-          </div>
+              </div>
             <% end %>
           <% end %>
         </div>
       </div>
       <div class="px-2">
         <p class="focus:outline-none text-sm leading-5 py-4 text-gray-600"><%= @post.content %></p>
+        
+        <p class="focus:outline-none text-sm leading-5 py-4 text-gray-600">
+          <strong>タグ:</strong> 
+          <% @post.tags.each do |tag| %>
+            <%= link_to tag.name, tag_path(tag), class: "text-blue-500 hover:text-blue-700" %>
+            <% if tag != @post.tags.last %> , <% end %>  <!-- 태그들 사이에 콤마 추가 -->
+          <% end %>
+        </p>
       </div>
     </div>
   </div>

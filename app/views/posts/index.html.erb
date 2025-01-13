@@ -8,6 +8,11 @@
             <div class="pl-3">
               <p class="focus:outline-none text-lg font-medium leading-5 text-gray-800"><%= link_to post.title, post_path(post) %></p>
               <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">by <%= post.user.nickname %></p>
+              <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">
+              <% post.tags.each do |tag| %>
+                <%= link_to tag.name, tag_path(tag), class: "text-blue-500 hover:text-blue-700" %>
+              <% end %>
+            </p>
             </div>
           </div>
         </div>
