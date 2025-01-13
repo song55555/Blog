@@ -5,8 +5,8 @@ Rails.application.routes.draw do
     :sessions => 'users/sessions',
     :passwords => 'users/passwords'
    }
-   
+
   root to: "posts#index"
-  resources :posts, only: [ :new, :create, :show, :destroy]
+  resources :posts, only: [ :new, :create, :show, :destroy, :edit, :update]
 
 end
