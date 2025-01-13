@@ -9,8 +9,7 @@ Rails.application.routes.draw do
   get 'home/top'
   get 'home/show'
 
-  root to: "home#top"
-  resources :posts, only: [ :index, :new, :create, :show, :destroy]
+  root to: "home#index"
+  resources :posts, only: [ :new, :create, :show, :destroy]
 
-  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

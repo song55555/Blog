@@ -3,7 +3,6 @@ require 'rails_helper'
 describe 'User', type: :system do
   before { driven_by :selenium_chrome_headless }
 
-  # ユーザー情報入力用の変数
   let(:email) { 'test@example.com' }
   let(:nickname) { 'テスト太郎' }
   let(:password) { 'password' }
@@ -12,7 +11,6 @@ describe 'User', type: :system do
   describe 'ユーザー登録機能の検証' do
     before { visit '/users/sign_up' }
 
-    # ユーザー登録を行う一連の操作を subject にまとめる
     subject do
       fill_in 'user_nickname', with: nickname
       fill_in 'user_email', with: email
@@ -23,9 +21,9 @@ describe 'User', type: :system do
 
     context '正常系' do
       it 'ユーザーを作成できる' do
-        expect { subject }.to change(User, :count).by(1) # Userが1つ増える
+        expect { subject }.to change(User, :count).by(1) 
         expect(page).to have_content('ユーザー登録に成功しました。')
-        expect(current_path).to eq('/') # ユーザー登録後はトップページにリダイレクト
+        expect(current_path).to eq('/') 
       end
     end
 
@@ -50,8 +48,8 @@ describe 'User', type: :system do
       context 'nicknameが空の場合' do
         let(:nickname) { '' }
         it 'ユーザーを作成せず、エラーメッセージを表示する' do
-          expect { subject }.not_to change(User, :count) # Userが増えない
-          expect(page).to have_content('ニックネーム が入力されていません。') # エラーメッセージのチェック
+          expect { subject }.not_to change(User, :count) 
+          expect(page).to have_content('ニックネーム が入力されていません。')
         end
       end
 
@@ -96,7 +94,7 @@ describe 'User', type: :system do
       end
 
       context 'passwordとpassword_confirmationが一致しない場合' do
-        let(:password_confirmation) { "#{password}hoge" } # passwordに"hoge"を足した文字列にする
+        let(:password_confirmation) { "#{password}hoge" }
         it 'ユーザーを作成せず、エラーメッセージを表示する' do
           expect { subject }.not_to change(User, :count)
           expect(page).to have_content('確認用パスワード が一致していません。')
@@ -107,7 +105,7 @@ describe 'User', type: :system do
 
   describe 'ログイン機能の検証' do
     before do
-      create(:user, nickname: nickname, email: email, password: password, password_confirmation: password) # ユーザー作成
+      create(:user, nickname: nickname, email: email, password: password, password_confirmation: password)
 
       visit '/users/sign_in'
       fill_in 'user_email', with: email
@@ -139,8 +137,8 @@ describe 'User', type: :system do
 
   describe 'ログアウト機能の検証' do
     before do
-      user = create(:user, nickname: nickname, email: email, password: password, password_confirmation: password) # ユーザー作成
-      sign_in user # 作成したユーザーでログイン
+      user = create(:user, nickname: nickname, email: email, password: password, password_confirmation: password) 
+      sign_in user 
       visit '/'
       click_button 'ログアウト'
     end
@@ -151,6 +149,52 @@ describe 'User', type: :system do
 
     it 'ログアウト時のフラッシュメッセージを表示する' do
       expect(page).to have_content('ログアウトしました。')
+    end
+  end
+  
+  describe 'ナビゲーションバーの検証' do
+    context 'ログインしていない場合' do
+      before { visit '/' }
+
+      it 'ユーザー登録リンクを表示する' do
+        expect(page).to have_link('ユーザー登録', href: '/users/sign_up')
+      end
+
+      it 'ログインリンクを表示する' do
+        expect(page).to have_link('ログイン', href: '/users/sign_in')
+      end
+
+      it 'ログアウトリンクは表示しない' do
+        expect(page).not_to have_content('ログアウト')
+      end
+    end
+
+    context 'ログインしている場合' do
+      before do
+        user = create(:user) 
+        sign_in user 
+        visit '/'
+      end
+
+      it 'ユーザー登録リンクは表示しない' do
+        expect(page).not_to have_link('ユーザー登録', href: '/users/sign_up')
+      end
+
+      it 'ログインリンクは表示しない' do
+        expect(page).not_to have_link('ログイン', href: '/users/sign_in')
+      end
+
+      it 'ログアウトリンクを表示する' do
+        expect(page).to have_content('ログアウト')
+      end
+
+      it 'ログアウトリンクが機能する' do
+        click_button 'ログアウト'
+
+        expect(page).to have_link('ユーザー登録', href: '/users/sign_up')
+        expect(page).to have_link('ログイン', href: '/users/sign_in')
+        expect(page).not_to have_button('ログアウト')
+      end
     end
   end
 end
