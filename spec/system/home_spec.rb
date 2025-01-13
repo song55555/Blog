@@ -25,6 +25,10 @@ RSpec.describe 'Home', type: :system do
         expect(page).to have_link('ログイン', href: '/users/sign_in')
       end
 
+      it 'ログ投稿リンクを表示しない' do 
+        expect(page).not_to have_link('ログ投稿', href: '/posts/new')
+      end
+
       it 'ログアウトリンクは表示しない' do
         expect(page).not_to have_content('ログアウト')
       end
@@ -45,6 +49,10 @@ RSpec.describe 'Home', type: :system do
         expect(page).not_to have_link('ログイン', href: '/users/sign_in')
       end
 
+      it 'ログ投稿リンクを表示する' do 
+        expect(page).to have_link('ログ投稿', href: '/posts/new')
+      end
+
       it 'ログアウトリンクを表示する' do
         expect(page).to have_content('ログアウト')
       end
@@ -55,7 +63,7 @@ RSpec.describe 'Home', type: :system do
         # ログインしていない状態のリンク表示パターンになることを確認
         expect(page).to have_link('ユーザー登録', href: '/users/sign_up')
         expect(page).to have_link('ログイン', href: '/users/sign_in')
-        expect(page).not_to have_content('ログアウト')
+        expect(page).not_to have_button('ログアウト')
       end
     end
   end
