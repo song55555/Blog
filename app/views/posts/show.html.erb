@@ -5,6 +5,10 @@
       <div class="flex items-center border-b border-gray-200 pb-6">
         <div class="flex items-start justify-between w-full">
           <div class="pl-3">
+            <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">
+                <strong>カテゴリー:</strong> 
+                <%= link_to @post.category.present? ? @post.category.name : "カテゴリー未設定", category_path(@post.category) %>
+            </p>
             <p class="focus:outline-none text-lg font-medium leading-5 text-gray-800"><%= link_to @post.title, post_path(@post) %></p>
             <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">by <%= @post.user.nickname %></p>
           </div>
@@ -25,7 +29,7 @@
           <strong>タグ:</strong> 
           <% @post.tags.each do |tag| %>
             <%= link_to tag.name, tag_path(tag), class: "text-blue-500 hover:text-blue-700" %>
-            <% if tag != @post.tags.last %> , <% end %>  <!-- 태그들 사이에 콤마 추가 -->
+            <% if tag != @post.tags.last %> , <% end %> 
           <% end %>
         </p>
       </div>
