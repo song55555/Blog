@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+
+    <% if Rails.env.development? %>
+      <script type="module" src="<%= vite_dev_server_url + '/@vite/client' %>"></script>
+      <script type="module" src="<%= vite_dev_server_url + '/src/main.js' %>"></script>
+     <% else %>
+      <% manifest = JSON.parse(File.read(Rails.root.join("frontend/public/manifest.json"))) %>
+      <% if manifest['src/main.js']['css'].present? %>
+        <% manifest['src/main.js']['css'].each do |css_file| %>
+          <%= stylesheet_link_tag "/frontend/public/" + css_file %>
+        <% end %>
+      <% end %>
+      <script type="module" src="<%= "/frontend/public/" + manifest['src/main.js']['file'] %>"></script>
+     <% end %>
   </head>
 
   <body class="h-screen bg-blue-50">
-    <%= render 'shared/navbar' %>
-    <%= render 'shared/flash' %>
-    <main class="container mx-auto mt-20 py-8 px-5 flex items-center justify-center">
-      <%= yield %>
-    </main>
+      <div id="app"></div>
   </body>
-  
 </html>

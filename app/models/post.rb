@@ -11,8 +11,8 @@ class Post < ApplicationRecord
   end
 
   def tag_names=(names)
-    tag_names = names.split(",").map(&:strip).uniq
-    new_tags = tag_names.map { |name| Tag.find_or_create_by(name: name) }
+      tag_names = names.split(",").map(&:strip).map(&:downcase).uniq
+      new_tags = tag_names.map { |name| Tag.find_or_create_by(name: name) }
     self.tags = new_tags
   end
 end

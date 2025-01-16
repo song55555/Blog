@@ -1,34 +1,21 @@
-# frozen_string_literal: true
-
 class Users::PasswordsController < Devise::PasswordsController
-  # GET /users/password/new
-  def new
-    super
-  end
 
-  # POST /users/password
   def create
-    super
+      user = User.find_by(email: params[:user][:email])
+          if user
+               user.send_reset_password_instructions
+                 head :no_content
+            else
+                render json: {error: 'User not found'}, status: :not_found
+            end
   end
 
-  # GET /users/password/edit?reset_password_token=abcdef
-  def edit
-    super
-  end
-
-  # PUT /users/password
   def update
-    super
-  end
-
-  protected
-
-  def after_resetting_password_path_for(resource)
-    super(resource)
-  end
-
-  # リセットパスワードの指示を送信した後に使用する path
-  def after_sending_reset_password_instructions_path_for(resource_name)
-    super(resource_name)
+        resource = User.reset_password_by_token(params[:user])
+      if resource.errors.empty?
+           render json: resource, status: :ok
+      else
+          render json: resource.errors, status: :unprocessable_entity
+        end
   end
 end

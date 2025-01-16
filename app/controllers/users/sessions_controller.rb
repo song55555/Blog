@@ -1,32 +1,15 @@
-# frozen_string_literal: true
-
 class Users::SessionsController < Devise::SessionsController
-  before_action :configure_sign_in_params, only: [:create]
-
-  # GET /users/sign_in
-  def new
-    super
-
-    puts '========================='
-    puts 'GET /resource/sign_in'
-    puts '========================='
-  end
-
-  # POST /users/sign_in
   def create
-    super
+    user = User.find_by(email: params[:user][:email])
+    if user&.valid_password?(params[:user][:password])
+      token = JWT.encode({user_id: user.id}, Rails.application.credentials.secret_key_base)
+      render json: { user: user, token: token, success: true }, status: :ok
+    else
+      render json: { error: 'Invalid email or password', success: false }, status: :unauthorized
+    end
   end
 
-  # GET /users/sign_out
-  # ここは config/initializers/devise.rb で config.sign_out_via = :get としているので DELETE ではなく GET
   def destroy
-    super
-  end
-
-  protected
-
-  # 許可するための追加のパラメータがある場合は、sanitizer に追加してください
-  def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
-  end
+      head :no_content
+   end
 end

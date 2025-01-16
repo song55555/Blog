@@ -16,6 +16,9 @@ gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'devise'
 gem 'devise-i18n'
+gem 'vite_ruby'
+gem 'rack-cors'
+gem 'kaminari'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
@@ -37,5 +40,3 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
 end
-
-gem "webpacker", "~> 5.4"

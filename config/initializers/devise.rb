@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Devise.setup do |config|
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
@@ -31,4 +29,5 @@ Devise.setup do |config|
 
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
+  config.mailer = false
 end
