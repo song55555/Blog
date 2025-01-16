@@ -1,5 +1,6 @@
+// PostCreate.vue
 <template>
-  <form @submit.prevent="handleSubmit" class="space-y-6 w-3/4 max-w-lg">
+  <form @submit.prevent="handleSubmit" class="space-y-6 w-11/12 max-w-lg sm:w-3/4">
     <label class="block text-xl font-bold text-gray-700">学習ログ投稿</label>
     <div class="mt-1">
       <label for="category_id" class="text-gray-700 text-lg">カテゴリー</label>
@@ -29,8 +30,7 @@
         placeholder="タグを入力">
     </div>
     <p class="mt-2 text-sm text-gray-500">
-      学習したこと、開発したことを記録しましょう。<br>
-      参考にしたサイトがあればURLを書いておくことをオススメします。
+      旅行に関する経験を教えてください！<br>
     </p>
     <div class="px-4 py-3 text-right sm:px-6">
       <button type="submit"
@@ -61,24 +61,23 @@ setup() {
     tag_names: '',
   });
   const categories = ref([]);
-  const loading = ref(false);
-  const error = ref(null);
-
+     const loading = ref(false);
+      const error = ref(null);
   const router = useRouter();
 
   const handleSubmit = async () => {
-    loading.value = true;
-     error.value = null;
+       loading.value = true;
+        error.value = null;
     try {
       await axios.post('/api/posts', post.value);
-         localStorage.setItem('flashMessage', '投稿しました。')
-         localStorage.setItem('flashType', 'notice')
+       localStorage.setItem('flashMessage', '投稿しました。')
+        localStorage.setItem('flashType', 'notice')
       router.push('/');
     } catch (err) {
       error.value = '投稿の作成に失敗しました。';
       console.error('投稿の作成に失敗しました。', err);
     } finally {
-      loading.value = false;
+        loading.value = false;
     }
   };
 
@@ -87,7 +86,7 @@ setup() {
       const response = await axios.get('/api/categories');
       categories.value = response.data;
     } catch (err) {
-      error.value = 'カテゴリー情報の取得に失敗しました。';
+       error.value = 'カテゴリー情報の取得に失敗しました。';
       console.error('カテゴリー情報の取得に失敗しました。', err);
     }
   };
@@ -100,8 +99,8 @@ setup() {
     post,
     categories,
       handleSubmit,
-    loading,
-     error
+      loading,
+       error
   };
 },
 };

@@ -19,6 +19,7 @@ gem 'devise-i18n'
 gem 'vite_ruby'
 gem 'rack-cors'
 gem 'kaminari'
+gem 'jwt'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]

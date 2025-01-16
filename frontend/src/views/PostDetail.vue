@@ -1,14 +1,15 @@
-<template>
+// PostDetail.vue
+ <template>
   <LoadingSpinner v-if="loading" />
   <Error v-else-if="error" :message="error" />
   <div v-else-if="post" class="container mx-auto mt-20 py-8 px-5 flex items-center justify-center flex-col">
-    <div class="space-y-6 w-3/4 max-w-lg">
+    <div class="space-y-6 w-11/12 max-w-lg sm:w-3/4">
       <label class="block text-xl font-bold text-gray-700">旅行記事詳細</label>
       <div class="items-center justify-center">
         <div tabindex="0" aria-label="card 1" class="focus:outline-none mb-7 bg-white p-6 shadow rounded">
           <div class="flex items-center border-b border-gray-200 pb-6">
-            <div class="flex items-start justify-between w-full">
-              <div class="flex-1 text-left">
+            <div class="flex items-start justify-between w-full flex-col sm:flex-row">
+              <div class="flex-1 text-left mb-2 sm:mb-0">
                 <p class="focus:outline-none text-3xl font-bold leading-5 text-gray-800">{{ post.title }}</p>
               </div>
               <div class="flex-1 text-right">
@@ -80,7 +81,7 @@ export default {
         const response = await axios.get(`/api/posts/${postId}`);
         post.value = response.data;
       } catch (err) {
-        error.value = '記事詳細データの取得に失敗しました。';
+         error.value = '記事詳細データの取得に失敗しました。';
         console.error('記事詳細データの取得に失敗しました。', err);
       } finally {
         loading.value = false;
@@ -92,7 +93,7 @@ export default {
         await axios.delete(`/api/posts/${postId}`);
         router.push('/');
       } catch (err) {
-        error.value = '記事削除に失敗しました。';
+         error.value = '記事削除に失敗しました。';
         console.error('記事削除に失敗しました。', err);
       }
     };

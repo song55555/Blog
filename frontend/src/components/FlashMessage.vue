@@ -1,6 +1,6 @@
 <template>
-  <div v-if="message" class="fixed top-5 left-1/2 -translate-x-1/2" role="alert">
-      <div v-if="type === 'notice'" class="p-4 mt-3 mb-4 mx-3 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" >
+  <div v-if="message" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 w-11/12 sm:w-auto" role="alert">
+      <div v-if="type === 'notice'" class="p-4 my-3 mx-auto text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800" >
           <p class="font-bold">
              {{ message }}
            </p>
@@ -8,7 +8,7 @@
              X
           </button>
        </div>
-       <div v-else class="p-4 mt-3 mb-4 mx-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800">
+       <div v-else class="p-4 my-3 mx-auto text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800">
            <p class="font-bold">
              {{ message }}
             </p>

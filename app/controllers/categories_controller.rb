@@ -1,4 +1,4 @@
-class Api::CategoriesController < ApplicationController
+class CategoriesController < ApplicationController
     def index
       @categories = Category.all
       render json: @categories

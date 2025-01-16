@@ -38,8 +38,8 @@ const fetchTag = async () => {
       const tagResponse = await axios.get(`/api/tags/${tagId}`);
       tag.value = tagResponse.data;
   } catch (err) {
-      error.value = 'タグ情報の取得に失敗しました。';
-      console.error('タグ情報の取得に失敗しました。', err);
+       error.value = 'タグ情報の取得に失敗しました。';
+    console.error('タグ情報の取得に失敗しました。', err);
   }
 }
 
@@ -51,7 +51,7 @@ try {
   posts.value = response.data.posts;
    totalPages.value = Math.ceil(response.data.total_count / perPage.value);
 } catch (err) {
-  error.value = 'タグ別記事データの取得に失敗しました。';
+    error.value = 'タグ別記事データの取得に失敗しました。';
   console.error('タグ別記事データの取得に失敗しました。', err);
 } finally {
   loading.value = false;

@@ -15,8 +15,8 @@ const routes = [
   { path: '/posts/:id/edit', component: PostEdit },
   { path: '/tags/:id', component: TagDetail },
   { path: '/categories/:id', component: CategoryDetail },
-    { path: '/users/sign_in', component: Login },
-    { path: '/register', component: Register }
+  { path: '/users/sign_in', component: Login },
+  { path: '/register', component: Register }
 ];
 
 const router = createRouter({

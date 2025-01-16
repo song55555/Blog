@@ -54,16 +54,16 @@
                    posts.value = response.data.posts;
                   totalPages.value = Math.ceil(response.data.total_count / perPage.value);
                } catch (err) {
-                    error.value = '記事データの取得に失敗しました。';
-                  console.error('記事データの取得に失敗しました。', err);
+                     error.value = '記事データの取得に失敗しました。';
+                    console.error('記事データの取得に失敗しました。', err);
                } finally {
-                    loading.value = false;
+                   loading.value = false;
                }
             };
 
-              const handlePageChange = (newPage) => {
-                   currentPage.value = newPage
-               }
+            const handlePageChange = (newPage) => {
+                 currentPage.value = newPage
+             }
 
             watch(
                  ()=> route.query,
@@ -75,8 +75,9 @@
               watch(currentPage, (newCurrentPage)=> {
                   fetchPosts(route.query.category, route.query.term, newCurrentPage);
                  })
-
-
+            onMounted(()=> {
+                fetchPosts()
+              })
           return {
              posts,
              handlePageChange,
