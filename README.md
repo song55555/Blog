@@ -49,6 +49,7 @@
 ```bash
 git clone https://github.com/song55555/Blog.git
 cd Blog
+```
 
 ### 2. ⚙️ 백엔드 의존성 설치 및 환경 설정
 
@@ -57,14 +58,14 @@ bundle install
 rails db:create
 rails db:migrate
 rails db:seed
-
-⚠️ 참고: rails db:seed 명령은 샘플 데이터를 데이터베이스에 추가합니다. 필요에 따라 생략하거나 수정할 수 있습니다.
+```
+⚠️ 참고: rails db:seed 명령은 샘플 데이터를 데이터베이스에 추가합니다.
 
 ### 3. 🚄 백엔드 서버 실행
 
 ```bash
 rails s
-
+```
 백엔드 서버는 기본적으로 http://localhost:3000 주소에서 실행됩니다.
 
 ### 4. ⚛️ 프론트엔드 의존성 설치 및 서버 실행
@@ -73,7 +74,7 @@ rails s
 cd frontend
 npm install
 npm run dev
-
+```
 프론트엔드 개발 서버는 기본적으로 http://localhost:5173 주소에서 실행됩니다.
 
 ### 5. ✅ 애플리케이션 확인
