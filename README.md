@@ -56,6 +56,7 @@ cd Blog
 ### 2. ⚙️ バックエンドの依存関係インストールおよび環境設定
 
 ```bash
+gem install bundler
 bundle install
 rails db:create
 rails db:migrate
