@@ -23,6 +23,11 @@
               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm placeholder-gray-400 border border-gray-300 rounded-md py-2 px-3"
               placeholder="環境構築を無事に終えることができた！"></textarea>
       </div>
+    <div class="mt-4">
+        <label for="image" class="text-gray-700 text-lg block mb-1">写真</label>
+        <input type="file" id="image" @change="handleImageUpload" accept="image/*"
+               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md py-2 px-3">
+      </div>
       <div class="mt-4">
           <label for="tag_names" class="text-gray-700 text-lg block mb-1">タグ</label>
           <input v-model="post.tag_names" type="text" id="tag_names"
@@ -69,7 +74,7 @@ export default {
       const postId = route.params.id
       const loading = ref(false);
       const error = ref(null);
-
+       const imageUrl = ref('');
 
       const handleSubmit = async () => {
           loading.value = true;
@@ -110,6 +115,30 @@ export default {
               console.error('カテゴリー情報の取得に失敗しました。', err);
           }
       }
+           const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('image', file);
+        loading.value = true;
+        error.value = null;
+        try {
+            const response = await axios.post('/api/upload', formData, {
+                headers: {
+                'Content-Type': 'multipart/form-data',
+                 },
+            });
+            imageUrl.value = response.data.url;
+            post.value.content += `\n![이미지 설명](${imageUrl.value})\n`;
+            console.log("image url=", imageUrl.value);
+          } catch (err) {
+            error.value = '画像のアップロードに失敗しました。';
+            console.error('画像のアップロードに失敗しました。', err);
+        } finally {
+          loading.value = false;
+        }
+     };
 
       onMounted(async ()=> {
           await fetchPost()
@@ -121,7 +150,9 @@ export default {
           categories,
           handleSubmit,
           loading,
-          error
+          error,
+           handleImageUpload,
+            imageUrl,
       }
   }
 }

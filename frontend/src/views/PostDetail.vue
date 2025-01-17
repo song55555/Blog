@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="px-2">
-            <p class="focus:outline-none text-lg leading-5 py-4 text-gray-600">{{ post.content }}</p>
+            <div v-html="renderedContent" class="focus:outline-none text-lg leading-5 py-4 text-gray-600"></div>
             <p class="focus:outline-none text-sm leading-5 py-4 text-gray-600">
               <strong>タグ:</strong>
               <router-link v-for="(tag, index) in post.tags" :key="tag.id" :to="`/tags/${tag.id}`"
@@ -31,7 +31,7 @@
                 <span v-if="index < post.tags.length - 1">,</span>
               </router-link>
             </p>
-            <div class="flex items-center justify-between"> 
+            <div class="flex items-center justify-between">
               <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">by {{ post?.user?.nickname }}</p>
               <div v-if="isAuthor" class="inline-flex space-x-2">
                 <router-link :to="`/posts/${post.id}/edit`"
@@ -58,6 +58,7 @@ import { useRoute, useRouter } from 'vue-router';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 import Error from '../components/Error.vue';
 import { useStore } from 'vuex';
+import { marked } from 'marked';
 
 export default {
   components: {
@@ -72,7 +73,12 @@ export default {
     const loading = ref(true);
     const error = ref(null);
     const store = useStore();
-
+      const renderedContent = computed(() => {
+        if (post.value && post.value.content) {
+            return marked(post.value.content, { sanitize: true });
+        }
+        return '';
+      });
     const isAuthor = computed(() => {
         const userId = store.state.userId;
          if (!userId || !post.value) {
@@ -114,7 +120,8 @@ export default {
       isAuthor,
       handleDelete,
       loading,
-      error
+      error,
+        renderedContent,
     };
   },
 };

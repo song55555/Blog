@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     resources :tags, path: '/tags' do
       resources :posts, only: [:index], path: '/posts'
     end
+    
+    post '/upload', to: 'uploads#create'
   end
 
   get '/api/posts', to: 'posts#index'
