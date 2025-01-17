@@ -1,5 +1,4 @@
-// PostDetail.vue
- <template>
+<template>
   <LoadingSpinner v-if="loading" />
   <Error v-else-if="error" :message="error" />
   <div v-else-if="post" class="container mx-auto mt-20 py-8 px-5 flex items-center justify-center flex-col">
@@ -13,13 +12,13 @@
                 <p class="focus:outline-none text-3xl font-bold leading-5 text-gray-800">{{ post.title }}</p>
               </div>
               <div class="flex-1 text-right">
-                  <p class="text-lg font-bold" :style="{ color: post.category ? '#007bff' : 'inherit' }">
+                <p class="text-lg font-bold" :style="{ color: post.category ? '#007bff' : 'inherit' }">
                     <router-link v-if="post.category" :to="`/categories/${post.category.id}`">
                       {{ post.category?.name }}
                     </router-link>
                     <span v-else>カテゴリー未設定</span>
                    </p>
-               </div>
+              </div>
             </div>
           </div>
           <div class="px-2">
@@ -32,9 +31,9 @@
                 <span v-if="index < post.tags.length - 1">,</span>
               </router-link>
             </p>
-            <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">by {{ post?.user?.nickname }}</p>
-          </div>
-           <div v-if="isAuthor" class="inline-flex space-x-2 justify-end">
+            <div class="flex items-center justify-between"> 
+              <p class="focus:outline-none text-sm leading-normal pt-2 text-gray-500">by {{ post?.user?.nickname }}</p>
+              <div v-if="isAuthor" class="inline-flex space-x-2">
                 <router-link :to="`/posts/${post.id}/edit`"
                   class="text-sm bg-transparent hover:bg-blue-500 text-blue-700 hover:text-white py-1 px-3 border border-blue-500 hover:border-transparent rounded">
                   編集
@@ -44,6 +43,8 @@
                   削除
                 </button>
               </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -52,10 +53,11 @@
 
 <script>
 import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import { useRoute, useRouter } from 'vue-router';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
 import Error from '../components/Error.vue';
+import { useStore } from 'vuex';
 
 export default {
   components: {
@@ -69,9 +71,14 @@ export default {
     const post = ref(null);
     const loading = ref(true);
     const error = ref(null);
+    const store = useStore();
 
     const isAuthor = computed(() => {
-      return post.value && post.value.user_id === parseInt(localStorage.getItem('userId'));
+        const userId = store.state.userId;
+         if (!userId || !post.value) {
+            return false;
+         }
+         return post.value.user_id === parseInt(userId, 10);
     });
 
     const fetchPost = async () => {

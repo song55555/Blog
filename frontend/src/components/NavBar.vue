@@ -23,51 +23,47 @@
    </nav>
  </template>
 
- <script>
- import axios from 'axios';
- import { useRouter } from 'vue-router';
- import {  computed, onMounted, ref } from 'vue';
- import { useStore } from 'vuex';
+<script>
+import axios from '@/utils/axios';
+import { useRouter } from 'vue-router';
+import {  computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 
-  export default {
-    setup(){
-        const store = useStore();
-       const router = useRouter()
-        const isLoggedIn = computed(()=> store.state.isLoggedIn);
-        const showMenu = ref(false);
+ export default {
+   setup(){
+       const store = useStore();
+      const router = useRouter()
+       const isLoggedIn = computed(()=> store.state.isLoggedIn);
+       const showMenu = ref(false);
 
-             const handleLogout = async() => {
-                 try {
-                     if (!store.state.authToken) return;
-                     await axios.delete('/api/users/sign_out', {
-                          headers: {
-                            'Authorization': store.state.authToken
-                          }
-                       })
-                    store.dispatch('clearUserInfo');
-                    router.push('/')
-                  } catch (error) {
-                     console.error(error);
-                }
-             }
-         const toggleMenu = () => {
-             showMenu.value = !showMenu.value
-         }
+            const handleLogout = async() => {
+                try {
+                    if (!store.state.authToken) return;
+                    await axios.delete('/api/users/sign_out')
+                   store.dispatch('clearUserInfo');
+                   router.push('/')
+                 } catch (error) {
+                    console.error(error);
+               }
+            }
+        const toggleMenu = () => {
+            showMenu.value = !showMenu.value
+        }
 
-               onMounted(() => {
-                    const userId = localStorage.getItem('userId');
-                    const authToken = localStorage.getItem('auth-token');
-                    if(userId && authToken){
-                        store.dispatch('setUserInfo', {userId: parseInt(userId), authToken: authToken})
-                     }
-               })
+              onMounted(() => {
+                   const userId = localStorage.getItem('userId');
+                   const authToken = localStorage.getItem('auth-token');
+                   if(userId && authToken){
+                       store.dispatch('setUserInfo', {userId: parseInt(userId), authToken: authToken})
+                    }
+              })
 
-             return {
-                 isLoggedIn,
-                 handleLogout,
-                 toggleMenu,
-                 showMenu
-             }
-       }
-   }
- </script>
+            return {
+                isLoggedIn,
+                handleLogout,
+                toggleMenu,
+                showMenu
+            }
+      }
+  }
+</script>

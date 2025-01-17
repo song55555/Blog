@@ -59,10 +59,11 @@ export default {
         const response = await axios.post('/api/users/sign_in', { user: { ...user.value } });
         console.log('Response Data:', response.data); 
 
-        const { user: userData, success } = response.data;
+        const { user: userData, success, token } = response.data;
         if (success) {
           localStorage.setItem('userId', userData.id);
-          store.dispatch('setUserInfo', { userId: userData.id });
+           localStorage.setItem('authToken', token);
+          store.dispatch('setUserInfo', { userId: userData.id, authToken: token });
           router.push('/');
           console.log('Router.push() called'); 
         } else {

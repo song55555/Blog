@@ -5,23 +5,24 @@ Rails.application.routes.draw do
     :sessions => 'users/sessions',
     :passwords => 'users/passwords'
   }
-
-  devise_scope :user do
-    post '/api/users/sign_in', to: 'users/sessions#create'
-    delete '/api/users/sign_out', to: 'users/sessions#destroy'
+  scope :api, defaults: { format: :json } do
+    devise_scope :user do
+      post '/users/sign_in', to: 'users/sessions#create'
+      delete '/users/sign_out', to: 'users/sessions#destroy'
+      post '/users', to: 'users/registrations#create'
+    end
+    
+    resources :users, only: [:update, :destroy], controller: 'users/registrations'
+    resources :posts, path: '/posts'
+    resources :categories, path: '/categories' do
+      resources :posts, only: [:index], path: '/posts'
+    end
+    resources :tags, path: '/tags' do
+      resources :posts, only: [:index], path: '/posts'
+    end
   end
-  
-  resources :users, only: [:update, :destroy], controller: 'users/registrations'
 
   get '/api/posts', to: 'posts#index'
   get '/api/categories', to: 'categories#index'
   get '/api/tags', to: 'tags#index'
-
-  resources :posts, path: '/api/posts'
-  resources :categories, path: '/api/categories' do
-    resources :posts, only: [:index], path: '/api/posts'
-  end
-  resources :tags, path: '/api/tags' do
-    resources :posts, only: [:index], path: '/api/posts'
-  end
 end
